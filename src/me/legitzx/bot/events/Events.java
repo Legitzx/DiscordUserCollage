@@ -1,5 +1,6 @@
 package me.legitzx.bot.events;
 
+import me.legitzx.bot.Info;
 import me.legitzx.bot.processing.ImageProcessor;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -12,7 +13,9 @@ public class Events extends ListenerAdapter {
     private ImageProcessor imageProcessor = new ImageProcessor();
 
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        if(event.getAuthor().getId().equals("272202471479181312")) {
+        String[] args = event.getMessage().getContentRaw().split(" ");
+
+        if(event.getAuthor().getId().equals("272202471479181312") && args[0].equalsIgnoreCase(Info.PREFIX + "createcollage")) {
             List<Member> members = new ArrayList<>(); // Stores all the members
 
             members = event.getGuild().getMembers();
@@ -30,6 +33,7 @@ public class Events extends ListenerAdapter {
             }
 
             imageProcessor.process(members.size()); // Final Step -- Creates the final image
+            event.getChannel().sendMessage("**Collage Successfully Created!**").queue();
         }
     }
 
